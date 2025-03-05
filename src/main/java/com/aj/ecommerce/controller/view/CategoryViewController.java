@@ -86,7 +86,7 @@ public class CategoryViewController {
         categoryService.updateCategory(category.getId(), categoryDTO);
 
         return "redirect:/admin/category";  // Redirect to the category list after updating
-    }
+    }	
 
     
 
