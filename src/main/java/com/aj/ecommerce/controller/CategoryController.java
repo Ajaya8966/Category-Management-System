@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aj.ecommerce.dto.CategoryDTO;
 import com.aj.ecommerce.model.Category;
 import com.aj.ecommerce.service.CategoryService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categories")
@@ -29,18 +32,15 @@ public class CategoryController {
     }
     
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody Category category) {
-        try {
-            Category savedCategory = categoryService.createCategory(category);
-            return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
+    	Category savedCategory = categoryService.createCategory(categoryDTO);
+    	return ResponseEntity.ok(savedCategory);
     }
     
     @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable int id, @RequestBody Category category) {
-        return categoryService.updateCategory(id, category);
+    public ResponseEntity<Category> updateCategory(@PathVariable Integer id, @Valid @RequestBody CategoryDTO categoryDTO) {
+        Category updatedCategory = categoryService.updateCategory(id, categoryDTO);
+        return ResponseEntity.ok(updatedCategory);
     }
     
     @DeleteMapping("/{id}")

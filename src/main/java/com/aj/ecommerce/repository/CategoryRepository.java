@@ -7,5 +7,7 @@ import com.aj.ecommerce.model.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-	
+	boolean existsByName(String name);
+
+	boolean existsByNameAndIdNot(String name, Long id);
 }

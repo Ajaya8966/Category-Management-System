@@ -12,7 +12,7 @@ public class Category {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String createdBy;
@@ -63,7 +63,18 @@ public class Category {
 		super();
 	}
 	
-	public Category(int id, String name, String createdBy, LocalDateTime createdDateTime, LocalDateTime updatedDateTime,
+	@PrePersist
+    public void onCreate() {
+        this.createdDateTime = LocalDateTime.now();
+        this.updatedDateTime = LocalDateTime.now();  
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedDateTime = LocalDateTime.now();  
+    }
+	
+	public Category(Integer id, String name, String createdBy, LocalDateTime createdDateTime, LocalDateTime updatedDateTime,
 			String updatedBy) {
 		super();
 		this.id = id;
@@ -73,11 +84,5 @@ public class Category {
 		this.updatedDateTime = updatedDateTime;
 		this.updatedBy = updatedBy;
 	}
-	
-	 @OneToMany(mappedBy = "category")
-	 private List<Brand> brands;
-    
-	 @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	    private List<Product> products;
 
 }
